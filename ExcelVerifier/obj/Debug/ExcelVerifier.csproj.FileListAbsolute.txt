@@ -1,0 +1,16 @@
+C:\Users\Basel\source\repos\ExcelVerifier\ExcelVerifier\bin\Debug\ExcelVerifier.exe.config
+C:\Users\Basel\source\repos\ExcelVerifier\ExcelVerifier\bin\Debug\ExcelVerifier.exe
+C:\Users\Basel\source\repos\ExcelVerifier\ExcelVerifier\bin\Debug\ExcelVerifier.pdb
+C:\Users\Basel\source\repos\ExcelVerifier\ExcelVerifier\obj\Debug\ExcelVerifier.csprojAssemblyReference.cache
+C:\Users\Basel\source\repos\ExcelVerifier\ExcelVerifier\obj\Debug\ExcelVerifier.Properties.Resources.resources
+C:\Users\Basel\source\repos\ExcelVerifier\ExcelVerifier\obj\Debug\ExcelVerifier.csproj.GenerateResource.cache
+C:\Users\Basel\source\repos\ExcelVerifier\ExcelVerifier\obj\Debug\ExcelVerifier.csproj.CoreCompileInputs.cache
+C:\Users\Basel\source\repos\ExcelVerifier\ExcelVerifier\obj\Debug\ExcelVerifier.exe
+C:\Users\Basel\source\repos\ExcelVerifier\ExcelVerifier\obj\Debug\ExcelVerifier.pdb
+C:\Users\Basel\source\repos\ExcelVerifier\ExcelVerifier\obj\Debug\ExcelVerifier.MainForm.resources
+C:\Users\Basel\source\repos\ExcelVerifier\ExcelVerifier\obj\Debug\ExcelVerifier.csproj.CopyComplete
+C:\Users\Basel\source\repos\ExcelVerifier\ExcelVerifier\bin\Debug\DocumentFormat.OpenXml.dll
+C:\Users\Basel\source\repos\ExcelVerifier\ExcelVerifier\bin\Debug\DocumentFormat.OpenXml.xml
+C:\Users\Basel\source\repos\ExcelVerifier\ExcelVerifier\bin\Debug\Microsoft.IO.RecyclableMemoryStream.dll
+C:\Users\Basel\source\repos\ExcelVerifier\ExcelVerifier\bin\Debug\System.ComponentModel.Annotations.dll
+C:\Users\Basel\source\repos\ExcelVerifier\ExcelVerifier\bin\Debug\Microsoft.IO.RecyclableMemoryStream.xml
