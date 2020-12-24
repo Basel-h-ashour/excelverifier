@@ -1,12 +1,6 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using System.Data.OleDb;
-using System.Windows.Forms;
 using System.IO;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Spreadsheet;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace ExcelVerifier
 {
@@ -41,6 +35,24 @@ namespace ExcelVerifier
                 da.Fill(dt);
                 return dt;
             }
+        }
+
+        public static DataSet GetExcelFileAsOneDataSetTable(OleDbConnection conn)
+        {
+            var sheets = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new[] { default, default, default, "TABLE" });
+            var ds = new DataSet();
+
+            if (sheets.Rows.Count == 0) return null;
+
+            ds.Tables.Add("Sheet1");
+            
+            foreach (DataRow r in sheets.Rows)
+            {
+                if (r["TABLE_NAME"].ToString().EndsWith("_") || r["TABLE_NAME"].ToString().EndsWith("_filterdatabase") || !r["TABLE_NAME"].ToString().EndsWith("$")) continue;
+                ds.Tables[0].Merge(GetExcelSheetAsDataTable(conn, r["TABLE_NAME"].ToString()));
+            }
+
+            return ds;
         }
 
         public static bool FileIsOpened(FileInfo file)

@@ -35,11 +35,15 @@ namespace ExcelVerifier
             this.outputTextBox = new System.Windows.Forms.TextBox();
             this.validateButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.outputFormat = new System.Windows.Forms.ComboBox();
+            this.inputFormat = new System.Windows.Forms.ComboBox();
             this.exportButton = new System.Windows.Forms.Button();
             this.outputBrowseButton = new System.Windows.Forms.Button();
             this.inputBrowseButton = new System.Windows.Forms.Button();
             this.resultLabel = new System.Windows.Forms.Label();
             this.statusLabel = new System.Windows.Forms.Label();
+            this.inputFormatLabel = new System.Windows.Forms.Label();
+            this.outputFormatLabel = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -78,7 +82,7 @@ namespace ExcelVerifier
             // validateButton
             // 
             this.validateButton.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.validateButton.Location = new System.Drawing.Point(211, 126);
+            this.validateButton.Location = new System.Drawing.Point(211, 285);
             this.validateButton.Name = "validateButton";
             this.validateButton.Size = new System.Drawing.Size(122, 33);
             this.validateButton.TabIndex = 4;
@@ -88,6 +92,10 @@ namespace ExcelVerifier
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.outputFormatLabel);
+            this.groupBox1.Controls.Add(this.inputFormatLabel);
+            this.groupBox1.Controls.Add(this.outputFormat);
+            this.groupBox1.Controls.Add(this.inputFormat);
             this.groupBox1.Controls.Add(this.exportButton);
             this.groupBox1.Controls.Add(this.outputBrowseButton);
             this.groupBox1.Controls.Add(this.inputBrowseButton);
@@ -98,15 +106,38 @@ namespace ExcelVerifier
             this.groupBox1.Controls.Add(this.inputTextBox);
             this.groupBox1.Location = new System.Drawing.Point(41, 42);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(509, 177);
+            this.groupBox1.Size = new System.Drawing.Size(509, 352);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Validation";
             // 
+            // outputFormat
+            // 
+            this.outputFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.outputFormat.FormattingEnabled = true;
+            this.outputFormat.Items.AddRange(new object[] {
+            "VIA MEDICA",
+            "LDM"});
+            this.outputFormat.Location = new System.Drawing.Point(145, 199);
+            this.outputFormat.Name = "outputFormat";
+            this.outputFormat.Size = new System.Drawing.Size(156, 21);
+            this.outputFormat.TabIndex = 10;
+            // 
+            // inputFormat
+            // 
+            this.inputFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.inputFormat.FormattingEnabled = true;
+            this.inputFormat.Items.AddRange(new object[] {
+            "VIA MEDICA"});
+            this.inputFormat.Location = new System.Drawing.Point(145, 144);
+            this.inputFormat.Name = "inputFormat";
+            this.inputFormat.Size = new System.Drawing.Size(156, 21);
+            this.inputFormat.TabIndex = 9;
+            // 
             // exportButton
             // 
             this.exportButton.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.exportButton.Location = new System.Drawing.Point(351, 126);
+            this.exportButton.Location = new System.Drawing.Point(351, 285);
             this.exportButton.Name = "exportButton";
             this.exportButton.Size = new System.Drawing.Size(122, 33);
             this.exportButton.TabIndex = 8;
@@ -149,11 +180,29 @@ namespace ExcelVerifier
             this.statusLabel.AutoSize = true;
             this.statusLabel.Font = new System.Drawing.Font("Unispace", 9.749999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.statusLabel.ForeColor = System.Drawing.Color.Yellow;
-            this.statusLabel.Location = new System.Drawing.Point(56, 256);
+            this.statusLabel.Location = new System.Drawing.Point(56, 425);
             this.statusLabel.MaximumSize = new System.Drawing.Size(510, 0);
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(0, 15);
             this.statusLabel.TabIndex = 9;
+            // 
+            // inputFormatLabel
+            // 
+            this.inputFormatLabel.AutoSize = true;
+            this.inputFormatLabel.Location = new System.Drawing.Point(15, 147);
+            this.inputFormatLabel.Name = "inputFormatLabel";
+            this.inputFormatLabel.Size = new System.Drawing.Size(95, 13);
+            this.inputFormatLabel.TabIndex = 11;
+            this.inputFormatLabel.Text = "Input Excel Format";
+            // 
+            // outputFormatLabel
+            // 
+            this.outputFormatLabel.AutoSize = true;
+            this.outputFormatLabel.Location = new System.Drawing.Point(15, 202);
+            this.outputFormatLabel.Name = "outputFormatLabel";
+            this.outputFormatLabel.Size = new System.Drawing.Size(103, 13);
+            this.outputFormatLabel.TabIndex = 12;
+            this.outputFormatLabel.Text = "Output Excel Format";
             // 
             // MainForm
             // 
@@ -168,6 +217,7 @@ namespace ExcelVerifier
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Excel Validator v1.0";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
@@ -188,6 +238,10 @@ namespace ExcelVerifier
         private System.Windows.Forms.Button inputBrowseButton;
         private System.Windows.Forms.Button exportButton;
         private System.Windows.Forms.Label statusLabel;
+        private System.Windows.Forms.ComboBox outputFormat;
+        private System.Windows.Forms.ComboBox inputFormat;
+        private System.Windows.Forms.Label outputFormatLabel;
+        private System.Windows.Forms.Label inputFormatLabel;
     }
 }
 
