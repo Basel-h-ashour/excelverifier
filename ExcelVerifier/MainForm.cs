@@ -134,6 +134,12 @@ namespace ExcelVerifier
                     //A set that detects the duplicates when keys repeat (only detects duplicates, and sends to above sets)
                     Dictionary<string, HashSet<string>> duplicatesDetector = new Dictionary<string, HashSet<string>>();
 
+                    //A set for each field that can't be combine duplicated (stores the duplicates)
+                    Dictionary<string, Dictionary<string, int>> duplicatesCombined = new Dictionary<string, Dictionary<string, int>>();
+
+                    //A set that detects the combined duplicates when keys repeat (only detects duplicates, and sends to above sets)
+                    Dictionary<string, HashSet<string>> duplicatesDetectorCombined = new Dictionary<string, HashSet<string>>();
+
                     //a set of fields common between all formats and having specific checks/modification (unifying their names with a known Key)
                     Dictionary<string, string> fieldNames = new Dictionary<string, string>();
 
@@ -172,9 +178,14 @@ namespace ExcelVerifier
                             duplicates.Add("Emirates_ID", new HashSet<string>());
                             duplicates.Add("Referring_Facility_MRN", new HashSet<string>());
 
+                            duplicatesCombined.Add("Emirates_ID|Referring_Facility_MRN", new Dictionary<string, int>());
+
+
                             duplicatesDetector.Add("Passport_Number", new HashSet<string>());
                             duplicatesDetector.Add("Emirates_ID", new HashSet<string>());
                             duplicatesDetector.Add("Referring_Facility_MRN", new HashSet<string>());
+
+                            duplicatesDetectorCombined.Add("Emirates_ID|Referring_Facility_MRN", new HashSet<string>());
 
                             break;
 
@@ -210,9 +221,12 @@ namespace ExcelVerifier
                             duplicates.Add("EMIRATES ID", new HashSet<string>());
                             duplicates.Add("MRN", new HashSet<string>());
 
+                            duplicatesCombined.Add("EMIRATES ID|MRN", new Dictionary<string, int>());
+
                             duplicatesDetector.Add("PASSPORT NUMBER", new HashSet<string>());
                             duplicatesDetector.Add("EMIRATES ID", new HashSet<string>());
-                            duplicatesDetector.Add("MRN", new HashSet<string>());
+
+                            duplicatesDetectorCombined.Add("EMIRATES ID|MRN", new HashSet<string>());
 
                             break;
                     }
@@ -221,32 +235,50 @@ namespace ExcelVerifier
                     {
                         if (excelData.Tables[i].Rows[j].ItemArray.All(v => v.ToString() == ""))
                         {
-                            excelData.Tables[i].Rows[j].Delete(); 
+                            excelData.Tables[i].Rows[j].Delete();
                             continue;
                         }
 
                         foreach (var detector in duplicatesDetector)
                         {
-                            string columnName = columnMapper[detector.Key];
-                            string cellData = excelData.Tables[i].Rows[j][columnName].ToString();
+                            string cellData = excelData.Tables[i].Rows[j][columnMapper[detector.Key]].ToString();
 
-                            if (duplicatesDetector.ContainsKey(detector.Key))
+                            if (duplicatesDetector[detector.Key].Contains(cellData))
                             {
-                                if (duplicatesDetector[detector.Key].Contains(cellData))
-                                {
-                                    duplicates[detector.Key].Add(cellData);
-                                }
+                                duplicates[detector.Key].Add(cellData);
+                            }
+                            else
+                            {
+                                duplicatesDetector[detector.Key].Add(cellData);
+                            }
+                        }
+
+                        foreach (var detector in duplicatesDetectorCombined)
+                        {
+                            string[] columns = detector.Key.Split('|');
+                            string cellData = "";
+
+                            for (int k = 0; k < columns.Length; k++)
+                            {
+                                cellData += excelData.Tables[i].Rows[j][columns[k]].ToString();
+                            }
+
+                            if (duplicatesDetectorCombined[detector.Key].Contains(cellData))
+                            {
+                                if (duplicatesCombined[detector.Key].ContainsKey(cellData))
+                                    duplicatesCombined[detector.Key][cellData]++;
                                 else
-                                {
-                                    duplicatesDetector[detector.Key].Add(cellData);
-                                }
+                                    duplicatesCombined[detector.Key].Add(cellData, 2);
+                            }
+                            else
+                            {
+                                duplicatesDetectorCombined[detector.Key].Add(cellData);
                             }
                         }
 
                         for (int k = 0; k < defaultAutocompletion.Count; k++)
                         {
-                            string columnName = columnMapper[defaultAutocompletion.ElementAt(k).Key];
-                            string cellData = excelData.Tables[i].Rows[j][columnName].ToString();
+                            string cellData = excelData.Tables[i].Rows[j][columnMapper[defaultAutocompletion.ElementAt(k).Key]].ToString();
 
                             if (defaultAutocompletion.ContainsKey(defaultAutocompletion.ElementAt(k).Key) && defaultAutocompletion[defaultAutocompletion.ElementAt(k).Key] == "" && cellData != "")
                             {
@@ -259,6 +291,19 @@ namespace ExcelVerifier
 
                     for (int j = 0; j < excelData.Tables[i].Rows.Count; j++)
                     {
+                        //Before adding the output row, check first if both EID and Ref Number are duplicated
+                        if (duplicatesCombined[fieldNames["EID"] + "|" + fieldNames["MRN"]].ContainsKey(excelData.Tables[i].Rows[j][fieldNames["EID"]].ToString() + excelData.Tables[i].Rows[j][fieldNames["MRN"]].ToString()))
+                        {
+                            if (duplicatesCombined[fieldNames["EID"] + "|" + fieldNames["MRN"]][excelData.Tables[i].Rows[j][fieldNames["EID"]].ToString() + excelData.Tables[i].Rows[j][fieldNames["MRN"]].ToString()] > 1)
+                            {
+                                duplicatesCombined[fieldNames["EID"] + "|" + fieldNames["MRN"]][excelData.Tables[i].Rows[j][fieldNames["EID"]].ToString() + excelData.Tables[i].Rows[j][fieldNames["MRN"]].ToString()]--;
+                                excelData.Tables[i].Rows[j].Delete();
+                                excelData.AcceptChanges();
+                                j--;
+                                continue;
+                            }
+                        }
+
                         outputExcelData.Tables[i].Rows.Add();
 
                         //check if that at least NID or Passport No. is available (use input column name here ONLY)
@@ -316,6 +361,8 @@ namespace ExcelVerifier
                             outputExcelData.Tables[i].Rows[j][outputColumnName] = cellData;
                         }
                     }
+
+                    outputExcelData.AcceptChanges();
                 }
             }
 
