@@ -225,6 +225,7 @@ namespace ExcelVerifier
 
                             duplicatesDetector.Add("PASSPORT NUMBER", new HashSet<string>());
                             duplicatesDetector.Add("EMIRATES ID", new HashSet<string>());
+                            duplicatesDetector.Add("MRN", new HashSet<string>());
 
                             duplicatesDetectorCombined.Add("EMIRATES ID|MRN", new HashSet<string>());
 
@@ -260,7 +261,7 @@ namespace ExcelVerifier
 
                             for (int k = 0; k < columns.Length; k++)
                             {
-                                cellData += excelData.Tables[i].Rows[j][columns[k]].ToString();
+                                cellData += excelData.Tables[i].Rows[j][columnMapper[columns[k]]].ToString();
                             }
 
                             if (duplicatesDetectorCombined[detector.Key].Contains(cellData))
@@ -291,12 +292,15 @@ namespace ExcelVerifier
 
                     for (int j = 0; j < excelData.Tables[i].Rows.Count; j++)
                     {
+                        string combinedName = fieldNames["EID"] + "|" + fieldNames["MRN"];
+                        string combinedValue = excelData.Tables[i].Rows[j][columnMapper[fieldNames["EID"]]].ToString() + excelData.Tables[i].Rows[j][columnMapper[fieldNames["MRN"]]].ToString();
+
                         //Before adding the output row, check first if both EID and Ref Number are duplicated
-                        if (duplicatesCombined[fieldNames["EID"] + "|" + fieldNames["MRN"]].ContainsKey(excelData.Tables[i].Rows[j][fieldNames["EID"]].ToString() + excelData.Tables[i].Rows[j][fieldNames["MRN"]].ToString()))
+                        if (duplicatesCombined[combinedName].ContainsKey(combinedValue))
                         {
-                            if (duplicatesCombined[fieldNames["EID"] + "|" + fieldNames["MRN"]][excelData.Tables[i].Rows[j][fieldNames["EID"]].ToString() + excelData.Tables[i].Rows[j][fieldNames["MRN"]].ToString()] > 1)
+                            if (duplicatesCombined[combinedName][combinedValue] > 1)
                             {
-                                duplicatesCombined[fieldNames["EID"] + "|" + fieldNames["MRN"]][excelData.Tables[i].Rows[j][fieldNames["EID"]].ToString() + excelData.Tables[i].Rows[j][fieldNames["MRN"]].ToString()]--;
+                                duplicatesCombined[combinedName][combinedValue]--;
                                 excelData.Tables[i].Rows[j].Delete();
                                 excelData.AcceptChanges();
                                 j--;
