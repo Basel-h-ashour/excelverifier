@@ -42,11 +42,7 @@ namespace ExcelVerifier
             this.exportButton = new System.Windows.Forms.Button();
             this.outputBrowseButton = new System.Windows.Forms.Button();
             this.inputBrowseButton = new System.Windows.Forms.Button();
-            this.resultLabel = new System.Windows.Forms.Label();
             this.statusLabel = new System.Windows.Forms.Label();
-            this.ddmmyyRadioButton = new System.Windows.Forms.RadioButton();
-            this.mmddyyRadioButton = new System.Windows.Forms.RadioButton();
-            this.dateFormatLabel = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -95,9 +91,6 @@ namespace ExcelVerifier
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.dateFormatLabel);
-            this.groupBox1.Controls.Add(this.mmddyyRadioButton);
-            this.groupBox1.Controls.Add(this.ddmmyyRadioButton);
             this.groupBox1.Controls.Add(this.outputFormatLabel);
             this.groupBox1.Controls.Add(this.inputFormatLabel);
             this.groupBox1.Controls.Add(this.outputFormat);
@@ -191,66 +184,24 @@ namespace ExcelVerifier
             this.inputBrowseButton.UseVisualStyleBackColor = false;
             this.inputBrowseButton.Click += new System.EventHandler(this.inputBrowseButton_Click);
             // 
-            // resultLabel
-            // 
-            this.resultLabel.AutoSize = true;
-            this.resultLabel.Location = new System.Drawing.Point(487, 17);
-            this.resultLabel.Name = "resultLabel";
-            this.resultLabel.Size = new System.Drawing.Size(0, 13);
-            this.resultLabel.TabIndex = 6;
-            // 
             // statusLabel
             // 
             this.statusLabel.AutoSize = true;
             this.statusLabel.Font = new System.Drawing.Font("Unispace", 9.749999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.statusLabel.ForeColor = System.Drawing.Color.Yellow;
-            this.statusLabel.Location = new System.Drawing.Point(56, 425);
+            this.statusLabel.Location = new System.Drawing.Point(56, 553);
             this.statusLabel.MaximumSize = new System.Drawing.Size(510, 0);
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(0, 15);
             this.statusLabel.TabIndex = 9;
-            // 
-            // ddmmyyRadioButton
-            // 
-            this.ddmmyyRadioButton.AutoSize = true;
-            this.ddmmyyRadioButton.Checked = true;
-            this.ddmmyyRadioButton.Location = new System.Drawing.Point(147, 298);
-            this.ddmmyyRadioButton.Name = "ddmmyyRadioButton";
-            this.ddmmyyRadioButton.Size = new System.Drawing.Size(83, 17);
-            this.ddmmyyRadioButton.TabIndex = 13;
-            this.ddmmyyRadioButton.TabStop = true;
-            this.ddmmyyRadioButton.Text = "dd/mm/yyyy";
-            this.ddmmyyRadioButton.UseVisualStyleBackColor = true;
-            // 
-            // mmddyyRadioButton
-            // 
-            this.mmddyyRadioButton.AutoSize = true;
-            this.mmddyyRadioButton.Location = new System.Drawing.Point(259, 298);
-            this.mmddyyRadioButton.Name = "mmddyyRadioButton";
-            this.mmddyyRadioButton.Size = new System.Drawing.Size(83, 17);
-            this.mmddyyRadioButton.TabIndex = 14;
-            this.mmddyyRadioButton.Text = "mm/dd/yyyy";
-            this.mmddyyRadioButton.UseVisualStyleBackColor = true;
-            // 
-            // dateFormatLabel
-            // 
-            this.dateFormatLabel.AutoSize = true;
-            this.dateFormatLabel.Location = new System.Drawing.Point(15, 295);
-            this.dateFormatLabel.MaximumSize = new System.Drawing.Size(100, 0);
-            this.dateFormatLabel.Name = "dateFormatLabel";
-            this.dateFormatLabel.Size = new System.Drawing.Size(90, 26);
-            this.dateFormatLabel.TabIndex = 15;
-            this.dateFormatLabel.Text = "Initial date format (in input file)";
-            this.dateFormatLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(590, 697);
+            this.ClientSize = new System.Drawing.Size(590, 629);
             this.Controls.Add(this.statusLabel);
-            this.Controls.Add(this.resultLabel);
             this.Controls.Add(this.groupBox1);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -272,7 +223,6 @@ namespace ExcelVerifier
         private System.Windows.Forms.TextBox outputTextBox;
         private System.Windows.Forms.Button validateButton;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label resultLabel;
         private System.Windows.Forms.Button outputBrowseButton;
         private System.Windows.Forms.Button inputBrowseButton;
         private System.Windows.Forms.Button exportButton;
@@ -281,9 +231,6 @@ namespace ExcelVerifier
         private System.Windows.Forms.ComboBox inputFormat;
         private System.Windows.Forms.Label outputFormatLabel;
         private System.Windows.Forms.Label inputFormatLabel;
-        private System.Windows.Forms.Label dateFormatLabel;
-        private System.Windows.Forms.RadioButton mmddyyRadioButton;
-        private System.Windows.Forms.RadioButton ddmmyyRadioButton;
     }
 }
 

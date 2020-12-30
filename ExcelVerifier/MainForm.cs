@@ -171,6 +171,7 @@ namespace ExcelVerifier
                             fieldNames.Add("gender", "Gender");
                             fieldNames.Add("MRN", "Referring_Facility_MRN");
                             fieldNames.Add("mobile_number", "Contact");
+                            fieldNames.Add("birthdate", "Date_Of_Birth");
 
                             defaultAutocompletion.Add("Emirate", "");
 
@@ -214,6 +215,7 @@ namespace ExcelVerifier
                             fieldNames.Add("gender", "GENDER");
                             fieldNames.Add("MRN", "MRN");
                             fieldNames.Add("mobile_number", "Mobile Number");
+                            fieldNames.Add("birthdate", "BIRTHDATE");
 
                             defaultAutocompletion.Add("city", "");
 
@@ -340,6 +342,9 @@ namespace ExcelVerifier
                                 continue;
 
                             }
+
+                            //check if EID is not in correct length
+                            
 
                             //Check for duplicates in the fields marked before to be unique
                             if (cellData != "" && duplicates.ContainsKey(outputColumnName) && duplicates[outputColumnName].Contains(cellData))
