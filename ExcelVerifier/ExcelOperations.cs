@@ -48,7 +48,7 @@ namespace ExcelVerifier
             
             foreach (DataRow r in sheets.Rows)
             {
-                if (r["TABLE_NAME"].ToString().EndsWith("_") || r["TABLE_NAME"].ToString().EndsWith("_filterdatabase") || !r["TABLE_NAME"].ToString().EndsWith("$")) continue;
+                if (r["TABLE_NAME"].ToString().EndsWith("_") || r["TABLE_NAME"].ToString().ToLower().EndsWith("_filterdatabase") || (!r["TABLE_NAME"].ToString().EndsWith("$") && !r["TABLE_NAME"].ToString().EndsWith("$'"))) continue;
                 ds.Tables[0].Merge(GetExcelSheetAsDataTable(conn, r["TABLE_NAME"].ToString()));
             }
 

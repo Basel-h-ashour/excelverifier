@@ -143,6 +143,10 @@ namespace ExcelVerifier
                     //a set of fields common between all formats and having specific checks/modification (unifying their names with a known Key)
                     Dictionary<string, string> fieldNames = new Dictionary<string, string>();
 
+                    //a set containing the required length of some fields like EID
+                    Dictionary<string, int> columnLengths = new Dictionary<string, int>();
+
+
                     outputExcelData.Tables.Add(excelData.Tables[i].TableName);
 
                     //Setting up output format for sheet + default autocompletion keys + duplicate detectors
@@ -234,6 +238,11 @@ namespace ExcelVerifier
                             break;
                     }
 
+                    //conditions shared between all formats
+                    //govern the length of some fields like EID
+                    columnLengths.Add("EID", 15);
+                    columnLengths.Add("mobile_number", 16);
+
                     for (int j = 0; j < excelData.Tables[i].Rows.Count; j++)
                     {
                         if (excelData.Tables[i].Rows[j].ItemArray.All(v => v.ToString() == ""))
@@ -294,6 +303,8 @@ namespace ExcelVerifier
 
                     for (int j = 0; j < excelData.Tables[i].Rows.Count; j++)
                     {
+                        bool hadDeletedDuplicates = false;
+
                         string combinedName = fieldNames["EID"] + "|" + fieldNames["MRN"];
                         string combinedValue = excelData.Tables[i].Rows[j][columnMapper[fieldNames["EID"]]].ToString() + excelData.Tables[i].Rows[j][columnMapper[fieldNames["MRN"]]].ToString();
 
@@ -308,9 +319,19 @@ namespace ExcelVerifier
                                 j--;
                                 continue;
                             }
+                            else
+                            {
+                                hadDeletedDuplicates = true;
+                            }
                         }
 
                         outputExcelData.Tables[i].Rows.Add();
+
+                        //if hadDeletedDuplicates is true, add a note stating so
+                        if (hadDeletedDuplicates)
+                        {
+                            outputExcelData.Tables[i].Rows[j]["Notes"] = "Other row(s) with the same EID & MRN were deleted; ";
+                        }
 
                         //check if that at least NID or Passport No. is available (use input column name here ONLY)
                         if (String.IsNullOrEmpty(excelData.Tables[i].Rows[j][columnMapper[fieldNames["EID"]]].ToString()) && String.IsNullOrEmpty(excelData.Tables[i].Rows[j][columnMapper[fieldNames["passport_number"]]].ToString()))
@@ -344,7 +365,16 @@ namespace ExcelVerifier
                             }
 
                             //check if EID is not in correct length
-                            
+                            if (outputColumnName == fieldNames["EID"] && !String.IsNullOrEmpty(cellData) && cellData.Replace("-", "").Length != columnLengths["EID"])
+                            {
+                                outputExcelData.Tables[i].Rows[j]["Notes"] = outputExcelData.Tables[i].Rows[j]["Notes"].ToString() + outputColumnName + " is not in correct length; ";
+                            }
+
+                            //check if mobile number is not in correct length
+                            if (outputColumnName == fieldNames["mobile_number"] && !String.IsNullOrEmpty(cellData) && cellData.Length != columnLengths["mobile_number"])
+                            {
+                                outputExcelData.Tables[i].Rows[j]["Notes"] = outputExcelData.Tables[i].Rows[j]["Notes"].ToString() + outputColumnName + " is not in correct length; ";
+                            }
 
                             //Check for duplicates in the fields marked before to be unique
                             if (cellData != "" && duplicates.ContainsKey(outputColumnName) && duplicates[outputColumnName].Contains(cellData))
@@ -355,6 +385,7 @@ namespace ExcelVerifier
                             //If column is marked to be autocompleted, use the default autocompletion found in first run
                             cellData = defaultAutocompletion.ContainsKey(outputColumnName) && String.IsNullOrEmpty(cellData) ? defaultAutocompletion[outputColumnName] : cellData;
 
+                            //operations that are specific to some formats
                             if (outputFormat.SelectedItem.ToString() == "LDM")
                             {
                                 //Only use initials for gender
@@ -374,7 +405,6 @@ namespace ExcelVerifier
                     outputExcelData.AcceptChanges();
                 }
             }
-
             statusLabel.Text = "STATUS:   SUCESSFULLY LOADED " + inputTextBox.Text.Split('\\').Last();
             statusLabel.ForeColor = System.Drawing.Color.GreenYellow;
             statusLabel.Refresh();
